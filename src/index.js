@@ -1,1 +1,2 @@
-console.log("fdsf");
+import main from './main.js'
+main()

@@ -1,12 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pacman</title>
+    <script src="dist/granim.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            font-family: 'Press Start 2P', cursive;
+        }
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+        .title {
+            margin: 0;
+            padding: 20px 0;
+            text-align: center;
+            color: orange;
+            width: 100%;
+            background-color: rgb(000, 000, 000, 0.7);
+        }
+        .info {
+            margin-top: 72px;
+            position: absolute;
+            left: 0;
+            width: 30vw;
+            padding: 20px 20px;
+            background-color: rgb(000, 000, 000, 0.3);
+        }
+        .info h2 {
+            color: orange;
+            margin-bottom: 20px;
+        }
+        .info p {
+            margin-bottom: 10px;
+        }
+        .game {
+            border: 2vw solid rgb(255, 165, 0);
+        }
+        #canvas-basic {
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 1;
+        }
+    </style>
 </head>
+
 <body>
+    <canvas id="canvas-basic"></canvas>
+    <div id='content' class="content">
+        <h1 class="title">Pacman!</h1>
+        <div class="info">
+            <h2>Game Info</h2>
+            <p>Press [R] to restart</p>
+            <p>Press [U] to fast speed mode</p>
+            <p>Press [I] to fast slow mode</p>
+        </div>
+        <div id='game' class="game">
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        var granimInstance = new Granim({
+            element: '#canvas-basic',
+            direction: 'left-right',
+            isPausedWhenNotInView: true,
+            states: {
+                "default-state": {
+                    gradients: [
+                        ['#ff9966', '#ff5e62'],
+                        ['#00F260', '#0575E6'],
+                        ['#e1eec3', '#f05053']
+                    ]
+                }
+            }
+        });
+    </script>
     <script type="module" src="src/index.js"></script>
 </body>
+
 </html>
