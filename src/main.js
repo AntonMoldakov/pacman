@@ -333,7 +333,7 @@ export default async function main() {
                         ghost.play = true
                         party.add(ghost)
                     }, 5000)
-                    let oldSpeedX = ghost.speedX = 0
+                    let oldSpeedX = ghost.speedX
                     let oldSpeedY = ghost.speedY
                     ghost.play = false
                     ghost.speedX = 0
@@ -345,9 +345,9 @@ export default async function main() {
                 } else {
                     pacman.speedX = 0
                     pacman.speedY = 0
+                    pacman.play = false
                     pacman.start('die', {
                         onEnd() {
-                            pacman.play = false
                             pacman.stop()
                             party.remove(pacman)
                         }
