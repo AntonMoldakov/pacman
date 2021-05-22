@@ -1,3 +1,4 @@
+
 import Game from './Game.js'
 import { loadImage, loadJSON, loadTableRecordsJSON } from './Loader.js'
 import Sprite from './Sprite.js'
