@@ -54,9 +54,9 @@ export default async function main() {
     game.stage.add(GameOver)
     gameContainer.append(game.canvas)
 
-    const image = await loadImage('/sets/spritesheet.png')
-    const atlas = await loadJSON('/sets/atlas.json')
-    const tableRecords = await loadTableRecordsJSON('/sets/table-records.json')
+    const image = await loadImage('./sets/spritesheet.png')
+    const atlas = await loadJSON('./sets/atlas.json')
+    const tableRecords = await loadTableRecordsJSON('./sets/table-records.json')
 
     const playersTableRecord = () => {
 
