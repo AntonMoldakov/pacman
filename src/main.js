@@ -151,7 +151,7 @@ export default async function main() {
             y: 0,
             width: 0,
             height: 0,
-            debug: true,
+            debug: false,
         })
         party.add(viewFields[i])
     }
@@ -403,6 +403,16 @@ export default async function main() {
     document.addEventListener('keydown', event => {
         if (event.keyCode === 82) {
             location.reload()
+        }
+        console.log(party)
+        console.log(event)
+
+        if (event.keyCode === 68) {
+            if (pacman.debug) {
+                party.items.map((e, i) => (i == 0)?null: e.debug = false)
+            } else {
+                party.items.map((e, i) => (i == 0)?null: e.debug = true)
+            }
         }
 
         if (!pacman.play) {
