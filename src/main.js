@@ -398,7 +398,7 @@ export default async function main() {
 
             }
         }
-    }
+    }  
 
     document.addEventListener('keydown', event => {
         if (event.keyCode === 82) {
