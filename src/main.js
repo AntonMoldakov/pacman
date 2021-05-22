@@ -38,7 +38,7 @@ export default async function main() {
         y: 40,
         content: "Slow",
         fill: 'white',
-    }) 
+    })
 
     const GameOver = new Text({
         x: game.canvas.width / 2,
@@ -292,7 +292,7 @@ export default async function main() {
             let ch = Math.random()
 
             if (hittingTheFieldOfView(ghost)) {
-                (!ghost.isBlue)? chanceTurning = 1: chanceTurning = 0.5
+                (!ghost.isBlue) ? chanceTurning = 1 : chanceTurning = 0.5
             }
 
             if ((ghost.speedX === 0 && ghost.speedY === 0) || ch > chanceTurning) {
@@ -324,7 +324,7 @@ export default async function main() {
 
             if (pacman.play && ghost.play && haveCollision(pacman, ghost)) {
                 if (ghost.isBlue) {
-                    setTimeout(()=> {
+                    setTimeout(() => {
                         // Возрождение призрака
                         ghost.x = game.canvas.width / 2
                         ghost.y = game.canvas.height / 2.07
@@ -376,19 +376,26 @@ export default async function main() {
         // Поедание таблеток
         for (let i = 0; i < tablets.length; i++) {
             const tablet = tablets[i]
+            let tabletEffectEnd
 
             if (haveCollision(pacman, tablet)) {
                 tablets.splice(i, 1)
                 party.remove(tablet)
 
-                ghosts.forEach(ghost => {
-                    ghost.originalAnimations = ghost.animations
+                if (ghosts[0].isBlue) {
+                    clearTimeout(tabletEffectEnd)
+                }
+
+                ghosts.forEach((ghost, i) => {
+                    if (!ghost.isBlue) {
+                        ghost.originalAnimations = ghost.animations
+                    }
                     ghost.animations = atlas.blueGhost
                     ghost.isBlue = true
                     ghost.start(ghost.animation.name)
                 })
 
-                setTimeout(() => {
+                tabletEffectEnd = setTimeout(() => {
                     ghosts.forEach(ghost => {
                         ghost.animations = ghost.originalAnimations
                         ghost.isBlue = false
@@ -398,7 +405,7 @@ export default async function main() {
 
             }
         }
-    }  
+    }
 
     document.addEventListener('keydown', event => {
         if (event.keyCode === 82) {
@@ -409,9 +416,9 @@ export default async function main() {
 
         if (event.keyCode === 68) {
             if (pacman.debug) {
-                party.items.map((e, i) => (i == 0)?null: e.debug = false)
+                party.items.map((e, i) => (i == 0) ? null : e.debug = false)
             } else {
-                party.items.map((e, i) => (i == 0)?null: e.debug = true)
+                party.items.map((e, i) => (i == 0) ? null : e.debug = true)
             }
         }
 
