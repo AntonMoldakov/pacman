@@ -262,16 +262,20 @@ export default async function main() {
             return result
         }
 
+        //Жив ли pacman
+        if (!pacman.play) {
+            GameOver.content = 'Game Over'
+        }
+
         // Жизнь призрака
         for (const ghost of ghosts) {
             if (!ghost.play) {
-                return
+                continue
             }
 
             if (!pacman.play) {
                 ghost.speedX = 0
                 ghost.speedY = 0
-                GameOver.content = 'Game Over'
                 continue
             }
 
@@ -324,12 +328,13 @@ export default async function main() {
                         // Возрождение призрака
                         ghost.x = game.canvas.width / 2
                         ghost.y = game.canvas.height / 2.07
-                        ghost.speedY = 1
-                        ghost.animation.name = 'down'
-                        ghost.start(ghost.animation.name)
+                        ghost.speedX = oldSpeedX
+                        ghost.speedY = oldSpeedY
                         ghost.play = true
                         party.add(ghost)
                     }, 5000)
+                    let oldSpeedX = ghost.speedX = 0
+                    let oldSpeedY = ghost.speedY
                     ghost.play = false
                     ghost.speedX = 0
                     ghost.speedY = 0
