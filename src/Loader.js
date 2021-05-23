@@ -11,12 +11,8 @@ export function loadJSON (src) {
     return fetch(src).then(x => x.json())
 }
 
-export function loadTableRecordsJSON (src) {
-    return fetch(src).then(x => x.json())
-}
 
 export default {
     loadImage,
-    loadJSON,
-    loadTableRecordsJSON
+    loadJSON
 }

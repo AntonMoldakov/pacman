@@ -1,5 +1,5 @@
 import Game from './Game.js'
-import { loadImage, loadJSON, loadTableRecordsJSON } from './Loader.js'
+import { loadImage, loadJSON } from './Loader.js'
 import Sprite from './Sprite.js'
 import Cinematic from './Cinematic.js'
 import { haveCollision, getRandomFrom } from './Additional.js'
@@ -11,7 +11,6 @@ const scale = 2
 let speedValue = 1
 let direction
 let gameContainer = document.getElementById('game')
-let contentContainer = document.getElementById('content')
 
 export default async function main() {
     const game = new Game({
@@ -56,11 +55,6 @@ export default async function main() {
 
     const image = await loadImage('./sets/spritesheet.png')
     const atlas = await loadJSON('./sets/atlas.json')
-    const tableRecords = await loadTableRecordsJSON('./sets/table-records.json')
-
-    const playersTableRecord = () => {
-
-    }
 
     const maze = new Sprite({
         image,
@@ -411,8 +405,6 @@ export default async function main() {
         if (event.keyCode === 82) {
             location.reload()
         }
-        console.log(party)
-        console.log(event)
 
         if (event.keyCode === 68) {
             if (pacman.debug) {
