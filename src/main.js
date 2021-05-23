@@ -1,17 +1,17 @@
 import Game from './Game.js'
-import { loadImage, loadJSON, loadTableRecordsJSON } from './Loader.js'
+import { loadImage, loadJSON } from './Loader.js'
 import Sprite from './Sprite.js'
 import Cinematic from './Cinematic.js'
 import { haveCollision, getRandomFrom } from './Additional.js'
 import DisplayObject from './DisplayObject.js'
 import Group from './Group.js'
 import Text from './Text.js'
+import { addToTheTableRecords } from './TableRecords.js'
 
 const scale = 2
 let speedValue = 1
 let direction
 let gameContainer = document.getElementById('game')
-let contentContainer = document.getElementById('content')
 
 export default async function main() {
     const game = new Game({
@@ -38,7 +38,7 @@ export default async function main() {
         y: 40,
         content: "Slow",
         fill: 'white',
-    }) 
+    })
 
     const GameOver = new Text({
         x: game.canvas.width / 2,
@@ -56,11 +56,6 @@ export default async function main() {
 
     const image = await loadImage('./sets/spritesheet.png')
     const atlas = await loadJSON('./sets/atlas.json')
-    const tableRecords = await loadTableRecordsJSON('./sets/table-records.json')
-
-    const playersTableRecord = () => {
-
-    }
 
     const maze = new Sprite({
         image,
@@ -264,7 +259,12 @@ export default async function main() {
 
         //Жив ли pacman
         if (!pacman.play) {
+            gameOver()
+        }
+
+        function gameOver() {
             GameOver.content = 'Game Over'
+            addToTheTableRecords('Rrr',status.points)
         }
 
         // Жизнь призрака
@@ -292,7 +292,7 @@ export default async function main() {
             let ch = Math.random()
 
             if (hittingTheFieldOfView(ghost)) {
-                (!ghost.isBlue)? chanceTurning = 1: chanceTurning = 0.5
+                (!ghost.isBlue) ? chanceTurning = 1 : chanceTurning = 0.5
             }
 
             if ((ghost.speedX === 0 && ghost.speedY === 0) || ch > chanceTurning) {
@@ -324,7 +324,7 @@ export default async function main() {
 
             if (pacman.play && ghost.play && haveCollision(pacman, ghost)) {
                 if (ghost.isBlue) {
-                    setTimeout(()=> {
+                    setTimeout(() => {
                         // Возрождение призрака
                         ghost.x = game.canvas.width / 2
                         ghost.y = game.canvas.height / 2.07
@@ -333,7 +333,7 @@ export default async function main() {
                         ghost.play = true
                         party.add(ghost)
                     }, 5000)
-                    let oldSpeedX = ghost.speedX = 0
+                    let oldSpeedX = ghost.speedX
                     let oldSpeedY = ghost.speedY
                     ghost.play = false
                     ghost.speedX = 0
@@ -345,9 +345,9 @@ export default async function main() {
                 } else {
                     pacman.speedX = 0
                     pacman.speedY = 0
+                    pacman.play = false
                     pacman.start('die', {
                         onEnd() {
-                            pacman.play = false
                             pacman.stop()
                             party.remove(pacman)
                         }
@@ -376,19 +376,26 @@ export default async function main() {
         // Поедание таблеток
         for (let i = 0; i < tablets.length; i++) {
             const tablet = tablets[i]
+            let tabletEffectEnd
 
             if (haveCollision(pacman, tablet)) {
                 tablets.splice(i, 1)
                 party.remove(tablet)
 
-                ghosts.forEach(ghost => {
-                    ghost.originalAnimations = ghost.animations
+                if (ghosts[0].isBlue) {
+                    clearTimeout(tabletEffectEnd)
+                }
+
+                ghosts.forEach((ghost, i) => {
+                    if (!ghost.isBlue) {
+                        ghost.originalAnimations = ghost.animations
+                    }
                     ghost.animations = atlas.blueGhost
                     ghost.isBlue = true
                     ghost.start(ghost.animation.name)
                 })
 
-                setTimeout(() => {
+                tabletEffectEnd = setTimeout(() => {
                     ghosts.forEach(ghost => {
                         ghost.animations = ghost.originalAnimations
                         ghost.isBlue = false
@@ -398,20 +405,18 @@ export default async function main() {
 
             }
         }
-    }  
+    }
 
     document.addEventListener('keydown', event => {
         if (event.keyCode === 82) {
             location.reload()
         }
-        console.log(party)
-        console.log(event)
 
         if (event.keyCode === 68) {
             if (pacman.debug) {
-                party.items.map((e, i) => (i == 0)?null: e.debug = false)
+                party.items.map((e, i) => (i == 0) ? null : e.debug = false)
             } else {
-                party.items.map((e, i) => (i == 0)?null: e.debug = true)
+                party.items.map((e, i) => (i == 0) ? null : e.debug = true)
             }
         }
 

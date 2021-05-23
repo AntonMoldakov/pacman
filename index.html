@@ -16,7 +16,7 @@
         .content {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
+            justify-content: space-between;
             position: relative;
             z-index: 10;
         }
@@ -29,10 +29,7 @@
             background-color: rgb(000, 000, 000, 0.7);
         }
         .info {
-            margin-top: 72px;
-            position: absolute;
-            left: 0;
-            width: 30vw;
+            width: 20vw;
             padding: 20px 20px;
             background-color: rgb(000, 000, 000, 0.3);
         }
@@ -44,6 +41,9 @@
             margin-bottom: 10px;
         }
         .game {
+            border: 2vw solid rgb(255, 165, 0);
+        }
+        .tableRecords {
             border: 2vw solid rgb(255, 165, 0);
         }
         #canvas-basic {
@@ -72,6 +72,9 @@
             <p>Press [D] to on/off debug mode</p>
         </div>
         <div id='game' class="game">
+
+        </div>
+        <div id='tableRecords' class="tableRecords">
 
         </div>
     </div>
