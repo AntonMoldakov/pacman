@@ -3,7 +3,6 @@ import Game from './Game.js'
 import Group from './Group.js'
 import Text from './Text.js'
 const tableContainer = document.getElementById('tableRecords')
-const fs = require('fs')
 export async function addToTheTableRecords(playerName, score) {
 
     let tableRecordsPlayers = await loadJSON('./sets/table-records.json')
@@ -19,10 +18,10 @@ export async function addToTheTableRecords(playerName, score) {
     }
     let jsonTableRecords = JSON.stringify(tableRecordsPlayers);
     
-    // fs.truncate('./sets/table-records.json', err => {
-    //     if(err) throw err
-    // })
-    // fs.writeFileSync("./sets/table-records.json", jsonTableRecords,  "ascii")
+    truncate('./sets/table-records.json', err => {
+         if(err) throw err
+     })
+    writeFileSync("./sets/table-records.json", jsonTableRecords,  "ascii")
 }
 export async function tableRecords() {
 
