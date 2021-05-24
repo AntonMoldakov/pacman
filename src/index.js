@@ -1,4 +1,4 @@
 import main from './main.js'
-import {tableRecords} from './TableRecords.js'
+import {tableRecordsF} from './TableRecords.js'
 main()
-tableRecords()
+tableRecordsF()

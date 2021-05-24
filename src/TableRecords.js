@@ -2,30 +2,34 @@ import { loadImage, loadJSON } from './Loader.js'
 import Game from './Game.js'
 import Group from './Group.js'
 import Text from './Text.js'
-const tableContainer = document.getElementById('tableRecords')
+
 export async function addToTheTableRecords(playerName, score) {
 
-    let tableRecordsPlayers = await loadJSON('./sets/table-records.json')
-    tableRecordsPlayers = tableRecordsPlayers.tableRecords
+    let tableRecordsPlayers = await loadJSON('./sets/tableRecords.json')
+    let tableRecords = tableRecordsPlayers.tableRecords
 
     let newRecord = {
         name: playerName,
         recordScore: score
     }
-    tableRecordsPlayers.push(newRecord)
-    tableRecordsPlayers = {
-        tableRecordsPlayers
-    }
-    let jsonTableRecords = JSON.stringify(tableRecordsPlayers);
-    
-    truncate('./sets/table-records.json', err => {
-         if(err) throw err
-     })
-    writeFileSync("./sets/table-records.json", jsonTableRecords,  "ascii")
-}
-export async function tableRecords() {
+    tableRecords.push(newRecord)
 
-    let tableRecordsPlayers = await loadJSON('./sets/table-records.json')
+    let data = JSON.stringify({ tableRecords })
+
+    var request = new XMLHttpRequest()
+    request.open("POST", "http://localhost:3000")
+    request.setRequestHeader('Content-type', 'application/json; charset=utf-8')
+
+    request.send(data)
+    setTimeout(tableRecordsF, 1000)
+ 
+}
+
+
+
+export async function tableRecordsF() {
+    let tableContainer = document.getElementById('tableRecords')
+    let tableRecordsPlayers = await loadJSON('./sets/tableRecords.json')
     tableRecordsPlayers = tableRecordsPlayers.tableRecords
 
     const table = new Game({
@@ -41,11 +45,16 @@ export async function tableRecords() {
         fill: 'white',
         textAlign: 'start'
     })
+    if (tableContainer.childElementCount > 0) {
+        let child = tableContainer.lastChild
+        tableContainer.removeChild(child)
+    }
 
     const party = new Group()
     table.stage.add(party)
-    tableContainer.append(table.canvas)
     table.stage.add(titleTable)
+    tableContainer.append(table.canvas)
+    
 
     tableRecordsPlayers.sort(function (a, b) { return b.recordScore - a.recordScore });
 
@@ -66,6 +75,6 @@ export async function tableRecords() {
 }
 
 export default {
-    tableRecords,
+    tableRecordsF,
     addToTheTableRecords
 }

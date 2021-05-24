@@ -259,12 +259,14 @@ export default async function main() {
 
         //Жив ли pacman
         if (!pacman.play) {
-            gameOver()
+            GameOver.content = 'Game Over'
         }
 
         function gameOver() {
-            GameOver.content = 'Game Over'
-            addToTheTableRecords('Rrr',status.points)
+            let userName = prompt(`у вас ${status.points} очков сохраните ваш результат`,'Player')
+            console.log(userName)
+            if (userName )
+            addToTheTableRecords(userName,status.points)
         }
 
         // Жизнь призрака
@@ -352,6 +354,7 @@ export default async function main() {
                             party.remove(pacman)
                         }
                     })
+                    setTimeout(gameOver,2000)
                 }
             }
         }
