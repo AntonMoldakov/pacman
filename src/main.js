@@ -6,6 +6,7 @@ import { haveCollision, getRandomFrom } from './Additional.js'
 import DisplayObject from './DisplayObject.js'
 import Group from './Group.js'
 import Text from './Text.js'
+import { addToTheTableRecords } from './TableRecords.js'
 
 const scale = 2
 let speedValue = 1
@@ -261,6 +262,13 @@ export default async function main() {
             GameOver.content = 'Game Over'
         }
 
+        function gameOver() {
+            let userName = prompt(`у вас ${status.points} очков сохраните ваш результат`,'Player')
+            console.log(userName)
+            if (userName )
+            addToTheTableRecords(userName,status.points)
+        }
+
         // Жизнь призрака
         for (const ghost of ghosts) {
             if (!ghost.play) {
@@ -346,6 +354,7 @@ export default async function main() {
                             party.remove(pacman)
                         }
                     })
+                    setTimeout(gameOver,2000)
                 }
             }
         }

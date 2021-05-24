@@ -3,11 +3,33 @@ import Game from './Game.js'
 import Group from './Group.js'
 import Text from './Text.js'
 
-const tableContainer = document.getElementById('tableRecords')
+export async function addToTheTableRecords(playerName, score) {
 
-export default async function tableRecords() {
+    let tableRecordsPlayers = await loadJSON('./sets/tableRecords.json')
+    let tableRecords = tableRecordsPlayers.tableRecords
 
-    let tableRecordsPlayers = await loadJSON('./sets/table-records.json')
+    let newRecord = {
+        name: playerName,
+        recordScore: score
+    }
+    tableRecords.push(newRecord)
+
+    let data = JSON.stringify({ tableRecords })
+
+    var request = new XMLHttpRequest()
+    request.open("POST", "http://localhost:3000")
+    request.setRequestHeader('Content-type', 'application/json; charset=utf-8')
+
+    request.send(data)
+    setTimeout(tableRecordsF, 1000)
+ 
+}
+
+
+
+export async function tableRecordsF() {
+    let tableContainer = document.getElementById('tableRecords')
+    let tableRecordsPlayers = await loadJSON('./sets/tableRecords.json')
     tableRecordsPlayers = tableRecordsPlayers.tableRecords
 
     const table = new Game({
@@ -16,19 +38,23 @@ export default async function tableRecords() {
         background: 'black'
     })
 
-    const titleTable =  new Text({
+    const titleTable = new Text({
         x: 20,
         y: 20,
         content: 'Table Records',
         fill: 'white',
         textAlign: 'start'
     })
+    if (tableContainer.childElementCount > 0) {
+        let child = tableContainer.lastChild
+        tableContainer.removeChild(child)
+    }
 
     const party = new Group()
     table.stage.add(party)
-    tableContainer.append(table.canvas)
     table.stage.add(titleTable)
-
+    tableContainer.append(table.canvas)
+    
 
     tableRecordsPlayers.sort(function (a, b) { return b.recordScore - a.recordScore });
 
@@ -46,4 +72,9 @@ export default async function tableRecords() {
         }
 
     })
+}
+
+export default {
+    tableRecordsF,
+    addToTheTableRecords
 }
